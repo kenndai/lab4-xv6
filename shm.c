@@ -53,8 +53,13 @@ int shm_open(int id, char **pointer) {
     // first to do shm_open()
     if (!idExists) {
         i = 0;
-        while (shm_table.shm_pages[i].id != 0)
+        while (shm_table.shm_pages[i].id != 0) {
             i++;
+            if (i == 64) {
+                cprintf("out of pages!\n");
+                return 1;
+            }
+        }
         shm_table.shm_pages[i].id = id;
 
         // custom allocuvm()
